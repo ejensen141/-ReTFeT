@@ -92,12 +92,9 @@ int main(int argc, char * argv[])
 
 	for ( int i =0; i<N/2; i++)
 	{
-	// compute magnitude and output to file
 
-	//fprintf(fp,"%f \n", sqrt(creal(X[i])*creal(X[i]) + cimag(X[i])*cimag(X[i]))); 
+
 		fprintf(fp,"%f \n", X[i]);
-
-	fprintf(fp,"%f \n", sqrt(creal(X[i])*creal(X[i]) + cimag(X[i])*cimag(X[i])));
 
 
 	}
