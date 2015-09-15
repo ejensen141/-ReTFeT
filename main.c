@@ -3,56 +3,65 @@
 #include <stdlib.h>
 #include <complex.h>
 #include <time.h>
+#include "retfet.h"
 
-
-const double TwoPi = 6.283185307179586;
-const double pi = 3.141592;
-
-
-void computeDFT(double *x, double complex *X, int N)
+void signalgen()
 {
-int n =0; 
-double constant = -1*TwoPi/N;
 
-do{ 
-	
-	
-	for ( int k =0; k<N/2; k++)
-	{
-		X[k] = X[k] + x[n]*cexp(constant*k*n*I);
-	}
-	
-	n++;
-	}while(n<N);
+int N = 20000;
+
+FILE * fp = fopen("signal.out","w");
+
+for(int i =0; i<N; i++)
+{
+
+fprintf(fp,"%f \n", 2*sin(i*1/10.0)+sin(i*10)+sin(i/1.0));
+
+
+}
+
+fclose(fp);
+
 
 
 }
 
 
-int main()
+
+
+int main(int argc, char * argv[])
 {
 
+
+	signalgen();
+
 	// Define memory 
-	int N = 2048;
+	int N = 1024;
 	double  *x = zeros(N);
-	double complex *X = zeros(N);
+	double  *X = zeros(N);
 
-
+	char buff[255];
 //Define the signal here (for testing purposes only) 
-	FILE * fs = fopen("signal.dat","w");
+	FILE * fs = fopen(argv[1],"r");
 	
+	if(fs)
+	
+	{
 	for ( int i =0; i<N; i++)
 	{
-		x[i] = 0.5*cos(2*pi*i/50.0) + 0.5*sin(2*pi*i/60.0); 
+	//	x[i] = 0.5*cos(2*pi*i/50.0) + 0.5*sin(2*pi*i/60.0); 
 		// test signal ... two out of phase (90 degree) signals at different frequencies. 
 		
-		fprintf(fs,"%f \n", x[i]); // save to file
+		//fprintf(fs,"%f \n", x[i]); // save to file
+		
+		fscanf(fs,"%s", buff);
+		x[i] = atof(buff);
 			
+	}
 	}
 	fclose(fs);
 	
-	
-	computeDFT(x,X,N); // run transform 
+	RTDFT(x,X,N,0,N/2); // run transform 
 	
 	
 	FILE *fp;
@@ -63,8 +72,8 @@ int main()
 	for ( int i =0; i<N/2; i++)
 	{
 	// compute magnitude and output to file
-	fprintf(fp,"%f \n", sqrt(creal(X[i])*creal(X[i]) + cimag(X[i])*cimag(X[i]))); 
-	
+	//fprintf(fp,"%f \n", sqrt(creal(X[i])*creal(X[i]) + cimag(X[i])*cimag(X[i]))); 
+		fprintf(fp,"%f \n", X[i]);
 	}
 	fclose(fp);
 

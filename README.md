@@ -13,10 +13,6 @@ University of Notre Dame
 
 
 
-
-
-
-
 ## Example Tests
 
 ![example](Figures/data.png "Results of KernelFit1D")
