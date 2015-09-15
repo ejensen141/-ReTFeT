@@ -1,3 +1,7 @@
 # executables, data files
 *.out
 *.dat
+
+# ignore objects, archives
+*.o
+*.a
